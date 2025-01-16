@@ -5,7 +5,7 @@ from sklearn.tree import export_text, plot_tree
 from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 import pandas as pd
-
+import numpy as np
 
 # Membaca dataset
 file_path = 'dataset_update_pasien_gagal_jantung.csv'
@@ -34,15 +34,6 @@ print(f"Akurasi: {accuracy * 100:.2f}%")
 print("Laporan Klasifikasi:")
 print(classification_rep)
 
-# # Visualisasi pohon keputusan dalam bentuk teks
-# tree_rules = export_text(decision_tree, feature_names=list(X.columns))
-# print(tree_rules)
-
-# # Visualisasi pohon keputusan dalam bentuk diagram
-# plt.figure(figsize=(20, 10))
-# plot_tree(decision_tree, feature_names=X.columns, class_names=['No Death', 'Death'], filled=True)
-# plt.show()
-
 # Definisi parameter yang akan diuji
 param_grid = {
     'max_depth': [3, 5, 10, None],
@@ -67,3 +58,17 @@ print(f"Parameter Terbaik: {best_params}")
 print(f"Akurasi Setelah Optimasi: {accuracy_optimized * 100:.2f}%")
 print("Laporan Klasifikasi Setelah Optimasi:")
 print(classification_rep_optimized)
+
+# Mengambil pentingnya fitur
+feature_importances = best_model.feature_importances_
+features = X.columns
+
+# Membuat plot fitur penting
+sorted_idx = np.argsort(feature_importances)[::-1]
+plt.figure(figsize=(10, 6))
+plt.barh(features[sorted_idx], feature_importances[sorted_idx], color='skyblue')
+plt.xlabel("Importance")
+plt.ylabel("Features")
+plt.title("Feature Importances")
+plt.gca().invert_yaxis()
+plt.show()
