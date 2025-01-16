@@ -2,7 +2,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.tree import export_text, plot_tree
-from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 import pandas as pd
 
