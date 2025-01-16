@@ -34,11 +34,36 @@ print(f"Akurasi: {accuracy * 100:.2f}%")
 print("Laporan Klasifikasi:")
 print(classification_rep)
 
-# Visualisasi pohon keputusan dalam bentuk teks
-tree_rules = export_text(decision_tree, feature_names=list(X.columns))
-print(tree_rules)
+# # Visualisasi pohon keputusan dalam bentuk teks
+# tree_rules = export_text(decision_tree, feature_names=list(X.columns))
+# print(tree_rules)
 
-# Visualisasi pohon keputusan dalam bentuk diagram
-plt.figure(figsize=(20, 10))
-plot_tree(decision_tree, feature_names=X.columns, class_names=['No Death', 'Death'], filled=True)
-plt.show()
+# # Visualisasi pohon keputusan dalam bentuk diagram
+# plt.figure(figsize=(20, 10))
+# plot_tree(decision_tree, feature_names=X.columns, class_names=['No Death', 'Death'], filled=True)
+# plt.show()
+
+# Definisi parameter yang akan diuji
+param_grid = {
+    'max_depth': [3, 5, 10, None],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+# Grid Search
+grid_search = GridSearchCV(DecisionTreeClassifier(random_state=42), param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+
+# Hasil terbaik
+best_params = grid_search.best_params_
+best_model = grid_search.best_estimator_
+
+# Evaluasi model terbaik
+y_pred_optimized = best_model.predict(X_test)
+accuracy_optimized = accuracy_score(y_test, y_pred_optimized)
+classification_rep_optimized = classification_report(y_test, y_pred_optimized)
+
+print(f"Parameter Terbaik: {best_params}")
+print(f"Akurasi Setelah Optimasi: {accuracy_optimized * 100:.2f}%")
+print("Laporan Klasifikasi Setelah Optimasi:")
+print(classification_rep_optimized)
