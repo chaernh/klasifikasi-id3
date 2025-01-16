@@ -2,8 +2,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.tree import export_text, plot_tree
+from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 import pandas as pd
+
 
 # Membaca dataset
 file_path = 'dataset_update_pasien_gagal_jantung.csv'
@@ -32,13 +34,11 @@ print(f"Akurasi: {accuracy * 100:.2f}%")
 print("Laporan Klasifikasi:")
 print(classification_rep)
 
+# Visualisasi pohon keputusan dalam bentuk teks
+tree_rules = export_text(decision_tree, feature_names=list(X.columns))
+print(tree_rules)
 
-
-# # Visualisasi pohon keputusan dalam bentuk teks
-# tree_rules = export_text(decision_tree, feature_names=list(X.columns))
-# print(tree_rules)
-
-# # Visualisasi pohon keputusan dalam bentuk diagram
-# plt.figure(figsize=(20, 10))
-# plot_tree(decision_tree, feature_names=X.columns, class_names=['No Death', 'Death'], filled=True)
-# plt.show()
+# Visualisasi pohon keputusan dalam bentuk diagram
+plt.figure(figsize=(20, 10))
+plot_tree(decision_tree, feature_names=X.columns, class_names=['No Death', 'Death'], filled=True)
+plt.show()
